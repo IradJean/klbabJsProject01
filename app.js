@@ -2,9 +2,11 @@
 const todoInput = document.querySelector('.todo-input');
 const todoButton = document.querySelector('.todo-button');
 const todoList = document.querySelector('.todo-list');
+const filterOption = document.querySelector('.filter-todo');
 //event listners
 todoButton.addEventListener('click', addTodo);
 todoList.addEventListener('click', deleteTodoItem);
+filterOption.addEventListener('click', filterTodo);
 
 
 // functions
@@ -16,13 +18,16 @@ const todoDiv = document.createElement('div');
 todoDiv.classList.add('todo');
 const newTodo = document.createElement('li');
 newTodo.innerHTML = todoInput.value;
-const spaceCheck = /\s+/;
-if(todoInput.value =="" ||spaceCheck.test(todoInput.value)){
+// const spaceCheck = /^[a-zA-z0-9]\s+$/;
+// const validInput = /^[^a-zA-Z0-9]+$/;  
+if(todoInput.value ==""){
     return;
 }
 else{
 newTodo.classList.add('todo-item');
 todoDiv.appendChild(newTodo);
+//saving to the local storage
+saveTodo(todoInput.value);
 //check mark button
 const completedButton = document.createElement('button');
 completedButton.innerHTML = '<i class="fas fa-check"></i>';
@@ -43,11 +48,14 @@ todoInput.value = "";
  function deleteTodoItem(e){
     const targetItem = e.target;
     //deleting toddo
-    console.log(targetItem);
+    // console.log(targetItem);
     if(targetItem.classList[0] === 'trash-btn'){
 
         const todo = targetItem.parentElement;
-        todo.remove();
+        todo.classList.add('fallback');
+        todo.addEventListener('transitionend', ()=>{
+            todo.remove();
+        })   // 
       
     }
     //check mark
@@ -61,5 +69,37 @@ todoInput.value = "";
     }
     }
 
-   
- 
+    //This function needs to be evaluated
+   function filterTodo(e){
+    const todos = todoList.childNodes;
+    
+   todos.forEach(function(todo){
+    // const todoClassList = todo.classList;
+     switch(e.target.value){
+        case "all":
+                        todo.style.display = 'flex';
+            break;
+        case "completed":
+               if(todo.classList.contains('completed')){
+                 todo.style.display = 'flex';
+                               }else{
+                               todo.style.display = 'none';
+                           }
+                          break;
+     }
+   });
+   }
+   //function to save the todo to the local storage:
+
+function saveTodo(todo){
+    let todos;
+    if(localStorage.getItem("todos")=== null){
+        todos = [];
+    }
+    else{
+        todos = JSON.parse(localStorage.getItem("todos"));
+    }
+    todos.push(todo);
+    localStorage.setItem("todos", JSON.stringify(todos));
+
+}

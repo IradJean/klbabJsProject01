@@ -26,6 +26,7 @@ form button{
      padding: 1rem;
      font-size: 2rem;
      border: none;
+     outline: none;
      background: #ababab;
      border-radius: 0.5rem;
 }
@@ -51,6 +52,7 @@ form input{
     align-items: center;
 } 
 .todo-list{
+    margin-left: -12rem;
     min-width: 35%;
     list-style: none;
 }
@@ -97,4 +99,43 @@ form input{
 }
 .fa-trash-can,.fa-check{
 pointer-events:  none;
+}
+.fallback{
+    transform: translateX(-15rem) rotateZ(-60deg);
+    opacity: 0;
+}
+select{
+-webkit-appearance: none;
+-moz-appearance: none;
+outline: none;
+border: none;
+}
+.select{
+    margin: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+select{
+    color: green;
+    width: 10rem;
+    cursor: pointer;
+    padding: 1.6rem;
+    border-radius: .6rem;
+    background: #ababab;
+}
+.select::after{
+    content: "\25BC";
+    position: absolute;
+    background: rgba(31, 165, 31, 0.671);
+    top: 0;
+    right: 0;
+    padding: 1.6rem;
+    pointer-events: none;
+    border-radius: .6rem;
+    border-top-left-radius: none;
+    border-bottom-left-radius: none;
+}
+.select:hover::after{
+    background: #ababab;
+    color: green;
 }
